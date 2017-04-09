@@ -1,0 +1,67 @@
+---
+title: "Rmd presentation & Plotly"
+subtitle: "Developing Data Products (week 3 assignment)"
+author: "Romain Faure"
+date: "April 9th 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+## Plotly plot | 3D scatter plot - [`mtcars`](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html)  data set
+
+
+```{r}
+library(plotly)
+mtcars$am[which(mtcars$am == 0)] <- 'Automatic'
+mtcars$am[which(mtcars$am == 1)] <- 'Manual'
+mtcars$am <- as.factor(mtcars$am)
+mtcars$name <- row.names(mtcars)
+
+plot_ly(mtcars, x = ~wt, y = ~hp, z = ~mpg, color = ~am, size = ~wt,
+        marker = list(symbol = 'circle', sizemode = 'diameter'), 
+        sizes = c(3, 30), colors = c("red", "orange"), 
+        hoverinfo = 'text',
+        text = ~paste('Weight :', wt, '<br>Horsepower :', hp,
+                      '<br>Miles per gallon :', mpg, 
+                      '<br>Transmission :', am,
+                      '<br>Car :', name)) %>%
+  layout(scene = list(xaxis = list(title = 'Weight'),
+                     yaxis = list(title = 'Horsepower'),
+                     zaxis = list(title = 'Miles per gallon')),
+    updatemenus = list(
+      list(
+        y = 0.8,
+        buttons = list(
+
+          list(method = "restyle",
+               args = list("marker.color", list("red", "orange")),
+               label = "Red/orange"),
+          list(method = "restyle",
+               args = list("marker.color", list("blue", "lightgreen")),
+               label = "Blue/green"),
+          list(method = "restyle",
+               args = list("marker.color", list("purple", "pink")),
+               label = "Purple/pink"))))
+)
+```
+
+## Plot details
+
+- This plot highlights the **negative linear trend** between both weight and horsepower on one side (*predictors*), and miles per gallon on the other side (*outcome*) - i.e. the smaller the `wt` and `hp`, the higher the resulting `mpg`.
+
+- The size of the data points corresponds to the cars weight (hence larger points being located towards the bottom of the plot).
+
+- Hover over the data points to display information, including the car name.
+
+- The user can choose between three sets of colors using the left-hand side drop-down menu.
+
+## Credits
+
+- This R Markdown presentation was created in RStudio version 1.0.136 (R version 3.3.3, OSX 10.11.6) and knitted to HTML using the [ioslides](http://rmarkdown.rstudio.com/ioslides_presentation_format.html) presentation format.
+
+- The plot was created using the [`plotly`](https://cran.r-project.org/web/packages/plotly/index.html) package version 4.5.6. [Plotly examples](https://plot.ly/r/3d-scatter-plots/) were used as a starting point but were highly customized.
+
+- This assignment is for the week 3 of the *Developing Data Products* course, part of the Johns Hopkins Data Science Specialization on [Coursera](http://coursera.org/).
