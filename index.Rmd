@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 ```{r}
 library(plotly)
+
 mtcars$am[which(mtcars$am == 0)] <- 'Automatic'
 mtcars$am[which(mtcars$am == 1)] <- 'Manual'
 mtcars$am <- as.factor(mtcars$am)
@@ -54,7 +55,7 @@ plot_ly(mtcars, x = ~wt, y = ~hp, z = ~mpg, color = ~am, size = ~wt,
 
 - The size of the data points corresponds to the cars weight (hence larger points being located towards the bottom of the plot).
 
-- Hover over the data points to display information, including the car name.
+- Hover over the data points to display detailed information, including the car name.
 
 - The user can choose between three sets of colors using the left-hand side drop-down menu.
 
